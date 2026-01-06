@@ -95,7 +95,7 @@ designed to process large-scale agricultural datasets and deliver analytics-read
 - PySpark transformations for scalable analytics
 - Power BI dashboards for visualization and decision support
 
-
+---
 ## 🧰 Technology Stack
 
 ### Core Technologies
@@ -153,6 +153,7 @@ Agricultural-Crop-Yield-Analytics/
 │
 └── README.md                         # Project documentation
 ```
+---
 ## 🧱 Data Layers (Medallion Architecture)
 
 The project follows the **Bronze–Silver–Gold lakehouse architecture** implemented on Databricks using Delta Lake, ensuring scalability, reliability, and analytics readiness.
@@ -184,7 +185,6 @@ The Bronze layer stores **raw, immutable agricultural datasets** ingested direct
 - Ingestion timestamps captured  
 - Source lineage maintained  
 
----
 
 ## 🥈 Silver Layer – Cleaned & Curated Data
 
@@ -199,9 +199,12 @@ The Silver layer contains **validated, standardized, and analytics-ready dataset
 
 | Table Name | Description |
 |-----------|------------|
+| `silver_crop_master` | Cleaned and standardized crop master reference data |
 | `silver_crop_production` | Cleaned and validated crop production data |
+| `silver_fertilizer_usage` | Cleaned and validated fertilizer usage data |
 | `silver_rainfall` | Cleaned rainfall data |
 | `silver_soil_health` | Cleaned soil health data |
+|
 
 ### Reject & Quarantine Tables
 Records failing validation rules are isolated for audit and debugging.
@@ -220,7 +223,6 @@ Records failing validation rules are isolated for audit and debugging.
 - Numeric range and null validations  
 - High-quality analytics-ready schema  
 
----
 
 ## 🥇 Gold Layer – Business Intelligence & Analytics
 
@@ -261,7 +263,6 @@ The Gold layer provides **aggregated, KPI-driven datasets** optimized for Power 
 - Error diagnostics  
 - Operational monitoring support  
 
----
 
 ### ✅ Summary
 - Bronze ensures **data integrity**
@@ -279,7 +280,6 @@ The orchestration layer ensures:
 - Operational visibility and monitoring
 - Automated retries and failure handling
 
----
 
 ### 🧩 Airflow DAG Design
 
@@ -341,7 +341,6 @@ The Power BI report is organized into multiple analytical views, each addressing
 | 🗺️ **Regional Performance** | State- and district-level production and yield comparison | Regional optimization |
 | 🌾 **Agricultural Yield Drivers Analysis** | Yield drivers such as fertilizer usage, soil health, and rainfall | Yield improvement insights |
 
----
 
 ### ⚙️ Dashboard Capabilities
 
@@ -350,33 +349,12 @@ The Power BI report is organized into multiple analytical views, each addressing
 - 🔍 **Drill-Down Analysis** – State → District → Crop level insights  
 - 🔄 **Automated Refresh** – Synced with Gold-layer Delta tables  
 - 📤 **Export Options** – PDF, Excel, and PowerPoint  
----
 
 ### 🎯 Business Impact
 - Enables identification of **high- and low-performing regions**
 - Improves visibility into **yield-influencing factors**
 - Supports **data-driven agricultural policy and planning**
 - Reduces manual analysis and reporting effort
----
-## 🚀 Quick Start
-
-This section provides step-by-step instructions to set up and run the **Agricultural Crop Production & Yield Optimization Analytics System**, covering environment setup, pipeline execution, and analytics consumption.
-
----
-
-## ✅ Prerequisites
-
-Before starting, ensure the following are available:
-
-- Docker Desktop (latest stable version)
-- Docker Compose v2 or higher
-- Python 3.8+
-- Access to a Databricks workspace
-- Databricks personal access token
-- Power BI Desktop
-- Git
-- Minimum 8 GB RAM (16 GB recommended)
-
 ---
 
 ## 🚀 Quick Start
@@ -397,8 +375,6 @@ Before starting, ensure the following are available:
 - Power BI Desktop
 - Git
 - Minimum 8 GB RAM (16 GB recommended)
-
----
 
 ### 📥 Step 1: Clone the Repository
 
@@ -576,4 +552,13 @@ You are free to use, modify, and distribute this project with proper attribution
 - Microsoft Power BI documentation  
 - PySpark and Apache Spark community  
 
+---
+
+## 👤 Author
+
+**Bandaru Venkata Kaushik**  
+📧 Email: kaushizzbv@gmail.com  
+
+📌 *Aspiring Data Engineer | Data Analytics & Lakehouse Architecture Enthusiast*  
+📌 *Focused on building scalable, production-ready data engineering solutions*
 ---
