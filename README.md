@@ -116,81 +116,245 @@ designed to process large-scale agricultural datasets and deliver analytics-read
 - Databricks Notebooks for development
 
 ---
-
 ## 📁 Project Structure
-Agricultural-Yield-Analytics/
-│
-├── airflow/ # Workflow orchestration
-│ ├── dags/
-│ │ └── crop_etl_pipeline.py
-│ └── docker-compose.yml
-│
-├── dataset/ # Raw data sources
-│ └── crop_production_raw.csv
-│
-├── etl_pipeline/ # ETL scripts
-│ ├── bronze_ingestion.py
-│ ├── silver_transformation.py
-│ └── gold_analytics.py
-│
-├── notebooks/ # Development notebooks
-│ ├── 01_bronze_ingestion.ipynb
-│ ├── 02_silver_transformation.ipynb
-│ └── 03_gold_analytics.ipynb
-│
-├── dashboard/ # Power BI reports
-│ └── agricultural_analytics.pbix
-│
-├── output/ # Sample outputs
-│ └── gold_tables_preview/
-│
-└── README.md
-## 🥉 Bronze Layer: Raw Data Foundation
 
-| Aspect | Details |
-|-----|--------|
-| Purpose | Immutable storage of raw crop data |
-| Processing | CSV ingestion, schema enforcement |
-| Format | Delta Lake |
-| Table | `bronze.crop_production_raw` |
+The project follows an enterprise-grade data engineering layout with clear separation of orchestration, data sources, processing, analytics, and visualization layers.
 
-### Key Features
-- Source data lineage tracking  
-- Ingestion timestamp recording  
-- Time travel support  
-- Zero data loss guarantee  
+```text
+Agricultural-Crop-Yield-Analytics/
+│
+├── capstone_airflow/                 # Workflow Orchestration (Apache Airflow)
+│   ├── airflow-dags/                 # Airflow DAG definitions
+│   ├── airflow-logs/                 # Pipeline execution & audit logs
+│   ├── airflow-plugins/              # Custom Airflow plugins (if any)
+│   ├── docker-compose.yml            # Airflow services orchestration
+│   ├── Dockerfile                    # Custom Airflow Docker image
+│   └── requirements.txt              # Python dependencies for Airflow
+│
+├── Datasets/                         # Source Data (Raw Datasets)
+│   ├── ca_crop_master.csv            # Crop reference & master data
+│   ├── ca_crop_production.csv        # Crop-wise production data
+│   ├── ca_fertilizer_usage.csv       # Fertilizer usage metrics
+│   ├── ca_rainfall_data.csv          # Rainfall & climate data
+│   └── ca_soil_health.csv            # Soil health indicators
+│
+├── Capstone_Chubb_Databricks/        # Databricks Lakehouse
+│   └── Capstone_Chubb/
+│       ├── bronze/                   # Raw ingestion tables (Bronze layer)
+│       ├── silver/                   # Cleaned & validated tables (Silver layer)
+│       ├── gold/                     # Aggregated analytics tables (Gold layer)
+│       └── Agricultural_Logging/     # Pipeline logging & monitoring
+│
+├── dashboard/                        # Business Intelligence Layer
+│   └── agricultural_analytics.pbix   # Power BI dashboard
+│
+├── images/                           # Documentation images
+│   └── system_architecture.png       # System architecture diagram
+│
+└── README.md                         # Project documentation
+```
+## 🧱 Data Layers (Medallion Architecture)
+
+The project follows the **Bronze–Silver–Gold lakehouse architecture** implemented on Databricks using Delta Lake, ensuring scalability, reliability, and analytics readiness.
 
 ---
 
-## 🥈 Silver Layer: Curated Data Assets
+## 🥉 Bronze Layer – Raw Data Foundation
 
-| Aspect | Details |
-|-----|--------|
-| Purpose | Cleaned and standardized datasets |
-| Processing | Validation, normalization, filtering |
-| Table | `silver.crop_production_clean` |
+The Bronze layer stores **raw, immutable agricultural datasets** ingested directly from source files with minimal transformation.
 
-### Key Features
-- Data quality enforcement  
-- Standardized crop and region names  
-- Invalid record removal  
-- Analytics-ready schema  
+### Purpose
+- Preserve original source data
+- Enable traceability and auditability
+- Support reprocessing if required
+
+### Bronze Tables
+
+| Table Name | Description |
+|----------|-------------|
+| `bronze_crop_master` | Raw crop master reference data |
+| `bronze_crop_production` | Raw crop-wise production data |
+| `bronze_fertilizer_usage` | Raw fertilizer usage data |
+| `bronze_rainfall` | Raw rainfall and climate data |
+| `bronze_soil_health` | Raw soil health indicators |
+
+### Key Characteristics
+- Immutable Delta tables  
+- Schema enforcement enabled  
+- Ingestion timestamps captured  
+- Source lineage maintained  
 
 ---
 
-## 🥇 Gold Layer: Business Intelligence
+## 🥈 Silver Layer – Cleaned & Curated Data
 
-| Aspect | Details |
-|-----|--------|
-| Purpose | Aggregated datasets for BI consumption |
-| Processing | KPI calculations, aggregations |
-| Tables |  
-|  | `gold.production_summary` |
-|  | `gold.yield_metrics` |
-|  | `gold.region_performance` |
+The Silver layer contains **validated, standardized, and analytics-ready datasets** derived from Bronze tables.
 
-### Key Features
+### Purpose
+- Improve data quality
+- Standardize business dimensions
+- Filter invalid or inconsistent records
+
+### Silver Tables
+
+| Table Name | Description |
+|-----------|------------|
+| `silver_crop_production` | Cleaned and validated crop production data |
+| `silver_rainfall` | Cleaned rainfall data |
+| `silver_soil_health` | Cleaned soil health data |
+
+### Reject & Quarantine Tables
+Records failing validation rules are isolated for audit and debugging.
+
+| Table Name | Description |
+|-----------|------------|
+| `silver_reject_crop_production` | Rejected crop production records |
+| `silver_reject_fertilizer_usage` | Rejected fertilizer usage records |
+| `silver_reject_rainfall` | Rejected rainfall records |
+| `silver_reject_soil_health` | Rejected soil health records |
+| `quarantine_crop_production` | Quarantined records for reprocessing |
+
+### Key Characteristics
+- Business rule enforcement  
+- Referential integrity checks  
+- Numeric range and null validations  
+- High-quality analytics-ready schema  
+
+---
+
+## 🥇 Gold Layer – Business Intelligence & Analytics
+
+The Gold layer provides **aggregated, KPI-driven datasets** optimized for Power BI reporting and decision-making.
+
+### Purpose
+- Enable fast BI queries
+- Provide single source of truth
+- Support executive dashboards
+
+### Gold Tables
+
+| Table Name | Description |
+|-----------|------------|
+| `gold_crop_yield_summary` | Yield metrics aggregated by crop, region, and year |
+| `gold_fertilizer_efficiency` | Fertilizer usage vs yield efficiency analysis |
+| `gold_region_performance` | Regional production and yield performance metrics |
+
+### Key Characteristics
 - Pre-aggregated for performance  
 - Denormalized for BI simplicity  
-- Optimized for Power BI  
-- Single source of truth  
+- Optimized for Power BI consumption  
+- Consistent KPI definitions  
+
+---
+
+## 📜 Pipeline Logging & Monitoring
+
+### Logging Tables
+
+| Table Name | Description |
+|-----------|------------|
+| `pipeline_logs` | End-to-end ETL execution logs |
+
+### Logging Capabilities
+- Pipeline execution timestamps  
+- Success / failure status tracking  
+- Error diagnostics  
+- Operational monitoring support  
+
+---
+
+### ✅ Summary
+- Bronze ensures **data integrity**
+- Silver ensures **data quality**
+- Gold ensures **business value**
+- Reject & log tables ensure **observability and reliability**
+---
+## 🔄 Orchestration with Apache Airflow
+
+Apache Airflow is used as the **central workflow orchestrator** to manage and monitor the end-to-end ETL pipeline across the **Bronze, Silver, and Gold layers**.
+
+The orchestration layer ensures:
+- Reliable scheduling of ETL jobs
+- Dependency management between data layers
+- Operational visibility and monitoring
+- Automated retries and failure handling
+
+---
+
+### 🧩 Airflow DAG Design
+
+The pipeline is implemented as a **task-based DAG**, where each task represents a logical stage of the data pipeline:
+
+| Task Name | Description |
+|---------|-------------|
+| `bronze_job` | Ingest raw agricultural datasets into Bronze Delta tables |
+| `silver_job` | Clean, validate, and standardize data into Silver tables |
+| `gold_task` | Generate aggregated analytics and KPIs in Gold tables |
+
+**Task Dependency Flow:**
+
+Each task is triggered only after the successful completion of its upstream dependency.
+
+---
+
+### 📸 Pipeline Execution Monitoring
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/databricks_job_runs.png" width="450"/>
+      <br>
+      <em>Airflow-Orchestrated Databricks Job Runs</em>
+    </td>
+    <td align="center">
+      <img src="images/airflow_dag_view.png" width="450"/>
+      <br>
+      <em>Apache Airflow DAG – Bronze → Silver → Gold</em>
+    </td>
+  </tr>
+</table>
+---
+
+### ⚙️ Orchestration Features
+
+- ⏱️ **Scheduled Execution** – Automated pipeline runs based on defined schedules  
+- 🔗 **Dependency Management** – Strict Bronze → Silver → Gold execution order  
+- 🔄 **Retry Mechanism** – Automatic retries on transient failures  
+- 📊 **Execution Monitoring** – Task duration, success, and failure tracking  
+- 🧾 **Audit Logging** – Execution details captured in pipeline log tables  
+
+---
+
+## 📊 Power BI Analytics Suite
+
+The Power BI layer delivers **interactive, executive-ready dashboards** built on curated **Gold-layer Delta tables**, enabling data-driven agricultural decision-making.
+
+
+### 📑 Report Pages Overview
+
+The Power BI report is organized into multiple analytical views, each addressing a specific business question:
+
+| Report Page | Description | Business Value |
+|------------|-------------|----------------|
+| 📌 **Executive Overview** | High-level KPIs including total production, average yield, and regional performance | Strategic planning & monitoring |
+| 🌧️ **Rainfall-Driven Yield Analysis** | Analysis of rainfall impact on crop yield across seasons and regions | Climate impact assessment |
+| 🗺️ **Regional Performance** | State- and district-level production and yield comparison | Regional optimization |
+| 🌾 **Agricultural Yield Drivers Analysis** | Yield drivers such as fertilizer usage, soil health, and rainfall | Yield improvement insights |
+
+---
+
+### ⚙️ Dashboard Capabilities
+
+- 🎛️ **Interactive Slicers** – Year, State, District, Crop, and Season  
+- 📈 **KPI Cards** – Production, Yield, Growth indicators  
+- 🔍 **Drill-Down Analysis** – State → District → Crop level insights  
+- 🔄 **Automated Refresh** – Synced with Gold-layer Delta tables  
+- 📤 **Export Options** – PDF, Excel, and PowerPoint  
+
+
+### 🎯 Business Impact
+- Enables identification of **high- and low-performing regions**
+- Improves visibility into **yield-influencing factors**
+- Supports **data-driven agricultural policy and planning**
+- Reduces manual analysis and reporting effort
+---
