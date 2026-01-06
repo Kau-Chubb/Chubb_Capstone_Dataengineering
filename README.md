@@ -75,16 +75,26 @@ This project delivers a **production-ready agricultural analytics system** that 
 
 ## 🏛️ Architecture
 
-### System Design Overview
+### System Architecture Overview
 
-- **Data Sources**: Raw crop production CSV files  
-- **Ingestion**: Databricks volumes & Spark ingestion  
-- **Processing**: PySpark transformations  
-- **Orchestration**: Apache Airflow  
-- **Storage**: Delta Lake (Bronze, Silver, Gold)  
-- **Visualization**: Power BI  
+<p align="center">
+  <img src="images/system_architecture.png" width="850"/>
+  <br>
+  <em>
+    End-to-End Agricultural Crop Production & Yield Optimization Analytics Architecture
+  </em>
+</p>
 
----
+This system follows a modern **lakehouse-based architecture** orchestrated by Apache Airflow, 
+designed to process large-scale agricultural datasets and deliver analytics-ready insights.
+
+**Architecture Flow:**
+- Multiple agricultural data sources (Crop Production, Rainfall, Soil Health, Fertilizer Usage)
+- Python & Pandas-based ingestion layer
+- Delta Lake–backed Bronze, Silver, and Gold layers
+- PySpark transformations for scalable analytics
+- Power BI dashboards for visualization and decision support
+
 
 ## 🧰 Technology Stack
 
