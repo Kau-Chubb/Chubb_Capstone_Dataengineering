@@ -302,12 +302,12 @@ Each task is triggered only after the successful completion of its upstream depe
 <table>
   <tr>
     <td align="center">
-      <img src="images/databricks_job_runs.png" width="450"/>
+      <img src="images/Databricks_Job.png" width="450"/>
       <br>
       <em>Airflow-Orchestrated Databricks Job Runs</em>
     </td>
     <td align="center">
-      <img src="images/airflow_dag_view.png" width="450"/>
+      <img src="images/Airflow_call.png" width="450"/>
       <br>
       <em>Apache Airflow DAG – Bronze → Silver → Gold</em>
     </td>
@@ -489,4 +489,91 @@ Databricks → Gold Tables
 Databricks → Agricultural_Logging Tables
 Airflow UI → Task Logs
 ```
+---
+## 🦖 Troubleshooting
+
+### Common Issues & Solutions
+
+▶ 🚫 **Airflow containers won’t start**  
+- Ensure Docker Desktop is running  
+- Verify Docker Compose version (`docker compose version`)  
+- Check port `8080` is not already in use  
+- Restart services using:
+  ```bash
+  docker compose down
+  docker compose up -d
+  ```
+
+▶ 🔑 **Databricks connection fails**  
+- Verify Databricks workspace URL  
+- Ensure the personal access token is valid and not expired  
+- Confirm the Airflow connection ID matches the DAG configuration  
+
+▶ 📊 **Power BI data refresh issues**  
+- Validate Databricks SQL endpoint configuration  
+- Re-check catalog and schema names  
+- Ensure the Gold tables exist and are accessible  
+
+▶ ⚠️ **Pipeline execution failures**  
+- Review task logs in Airflow UI  
+- Check Databricks job run logs  
+- Inspect reject and quarantine tables for invalid records  
+
+---
+
+## 📚 Documentation
+
+### Additional Resources
+
+- 📘 [Apache Airflow Documentation](https://airflow.apache.org/docs/)
+- 📘 [Databricks Best Practices](https://docs.databricks.com/)
+- 📘 [Delta Lake Guide](https://delta.io/)
+- 📘 [Power BI Documentation](https://learn.microsoft.com/power-bi/)
+- 📘 [PySpark API Reference](https://spark.apache.org/docs/latest/api/python/)
+
+---
+
+### Project Artifacts
+
+- 📊 **Sample Dataset** – Raw agricultural input data  
+- 📓 **Jupyter Notebooks** – Bronze, Silver, and Gold layer development  
+- 🎨 **Power BI Dashboard** – Interactive analytics and KPIs  
+- 📈 **Analytics Preview** – Sample outputs from Gold tables
+---
+
+## 🔮 Future Enhancements
+
+- Add real-time ingestion using Kafka or Auto Loader  
+- Implement CI/CD for Airflow DAGs and Databricks jobs  
+- Enable automated Power BI refresh using gateways  
+- Introduce anomaly detection for yield and production  
+- Add role-based access control for analytics  
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates the successful design and implementation of an **end-to-end Agricultural Crop Production & Yield Optimization Analytics System** using modern data engineering and analytics tools.
+
+By combining **Apache Airflow**, **Databricks**, **Delta Lake**, and **Power BI**, the solution enables scalable data processing, reliable ETL orchestration, and actionable insights for agricultural decision-making.
+
+The project showcases real-world data engineering practices including **lakehouse architecture**, **data quality enforcement**, **workflow automation**, and **business intelligence reporting**, making it suitable for enterprise and production use cases.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.  
+You are free to use, modify, and distribute this project with proper attribution.
+
+---
+
+## 🙏 Acknowledgements
+
+- Apache Airflow community  
+- Databricks documentation and learning resources  
+- Delta Lake open-source contributors  
+- Microsoft Power BI documentation  
+- PySpark and Apache Spark community  
+
 ---
